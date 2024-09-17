@@ -1,0 +1,5 @@
+body {
+  background-image('/img1.jpg');
+  background-size: cover;
+  font-family: arial, sans-serif;
+}
