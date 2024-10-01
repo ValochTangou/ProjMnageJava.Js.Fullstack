@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
@@ -14,14 +14,14 @@ import Setting from './pages/Setting';
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route Path="/login" component={Login} />
-        <Route Path="/forgot-password" component={ForgotPassword} />
-        <Route Path="/register" component={Register} />
-        <Route Path="/main-page" component={MainPage} />
-        <Route Path="/overview" component={Overview} />
-        <Route exact path="/" component={Home} /> {/* Added exact path for Home */}
-      </Switch>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/main-page" element={<MainPage />} />
+        <Route path="/overview" element={<Overview />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
     </Router>
   );
 }
