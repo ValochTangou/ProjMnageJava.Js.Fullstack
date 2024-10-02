@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
@@ -14,14 +14,32 @@ import Setting from './pages/Setting';
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/main-page" element={<MainPage />} />
-        <Route path="/overview" element={<Overview />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
+      <div>
+        <nav>
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/register">Register</Link></li>
+            <li><Link to="/main-page">Main page</Link></li>
+            <li><Link to="/overview">Overview</Link></li>
+            <li><Link to="/message">Message</Link></li>
+            <li><Link to="/about-author">About author</Link></li>
+            <li><Link to="/setting">Setting</Link></li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/main-page" element={<MainPage />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/message" element={<Message />} />
+          <Route path="/about-author" element={<AboutAuthor />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
