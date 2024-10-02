@@ -3,3 +3,44 @@ body {
   background-size: cover;
   font-family: arial, sans-serif;
 }
+
+.home {
+  text-align: center;
+}
+
+.login, .register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task-summary{
+  display: flex;
+  justify-content: space-between;
+}
+
+.task {
+  padding: 10px;
+  width: 30%;
+  border-radius: 5px;
+}
+.auth-buttons{
+  margin-top: 20px;
+}
+
+.auth-buttons button {
+  margin: 5px;
+}
+
+form {
+  width: 300px;
+  margin-top: 20px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+.carousel-container {
+  margin-top: 30px;
+}
