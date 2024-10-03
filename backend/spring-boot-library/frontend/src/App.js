@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
@@ -11,10 +11,14 @@ import ForgotUsername from './pages/ForgotUsername';
 import Message from './pages/Message';
 import Setting from './pages/Setting';
 
-function App() {
+function Layout() {
+  const location = useLocation();
+  const hideMenuRoutes = ['/login', '/register', '/forgot-password', '/forgot-username'];
+  const shouldHideMenu = hideMenuRoutes.includes(location.pathname);
+
   return (
-    <Router>
-      <div>
+    <div>
+      {!shouldHideMenu && (
         <nav>
           <ul>
             <li><Link to="/">Home</Link></li>
@@ -27,19 +31,29 @@ function App() {
             <li><Link to="/setting">Setting</Link></li>
           </ul>
         </nav>
+      )}
 
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/main-page" element={<MainPage />} />
-          <Route path="/overview" element={<Overview />} />
-          <Route path="/message" element={<Message />} />
-          <Route path="/about-author" element={<AboutAuthor />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/main-page" element={<MainPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-username" element={<ForgotUsername />} />
+        <Route path="/overview" element={<Overview />} />
+        <Route path="/message" element={<Message />} />
+        <Route path="/about-author" element={<AboutAuthor />} />
+        <Route path="/setting" element={<Setting />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Layout />
     </Router>
   );
 }
