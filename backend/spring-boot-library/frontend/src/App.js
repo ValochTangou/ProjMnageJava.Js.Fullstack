@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
+import { FaPhone, FaRegSmile } from 'react-icons/fa';
+import { Picker } from '@emoji-mart/react'; // Updated emoji-mart import
 import Home from './pages/Home';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
