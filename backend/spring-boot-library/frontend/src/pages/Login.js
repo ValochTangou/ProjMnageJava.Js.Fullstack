@@ -8,15 +8,15 @@ function Login() {
       <form>
         <div className="form-group">
           <label>Username</label>
-          <input type="text" className="form-control" placeholder="Enter username" />
+          <input type="text" className="form-control" placeholder="Enter username" required/>
         </div>
         <div className="form-group">
           <label>Email</label>
-          <input type="email" className="form-control" placeholder="Enter email" />
+          <input type="email" className="form-control" placeholder="Enter email" required/>
         </div>
         <div className="form-group">
           <label>Password</label>
-          <input type="password" className="form-control" placeholder="Enter password" />
+          <input type="password" className="form-control" placeholder="Enter password" required/>
         </div>
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
