@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import { FaPhone, FaVideo, FaSmile, FaImage, FaPhoneSlash, FaMicrophoneSlash, FaMicrophone, FaVideoSlash } from 'react-icons/fa'; // Icons for call controls
+import { FaPhone, FaVideo, FaSmile, FaImage, FaPhoneSlash, FaMicrophoneSlash, FaMicrophone, FaVideoSlash, FaUserFriends } from 'react-icons/fa'; // Icons for call controls
 import Picker from '@emoji-mart/react';
-import data from '@emoji-mart/data'; // Emoji data import
+import data from '@emoji-mart/data';
 
-const colleagues = ['Reg', 'Aurinnelle', 'Lesley'];
+const colleagues = ['Reg', 'Aurinelle', 'Lesley', 'Jenny', 'Cedrick']; // List des colleques
 
 function Message() {
     const [message, setMessage] = useState('');
-    const [privateMessage, setPrivateMessage] = useState('');
-    const [selectedColleague, setSelectedColleague] = useState(null);
+    const [selectedColleagues, setSelectedColleagues] = useState([]);
     const [isMuted, setIsMuted] = useState(false);
     const [isVideoEnabled, setIsVideoEnabled] = useState(true);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [image, setImage] = useState(null);
     const [isCallActive, setIsCallActive] = useState(false);
     const [isVideoCall, setIsVideoCall] = useState(false);
+    const [showColleagueList, setShowColleagueList] = useState(false);
 
     const handleSendMessage = () => {
-        console.log('Message sent:', message, 'To:', selectedColleague);
+        if (selectedColleagues.length === 0) {
+            alert('Please select at least one colleague to send a message');
+            return;
+        }
+        console.log('Message sent:', message, 'To:', selectedColleagues);
         setMessage(''); // Reset message input after sending
-    };
-
-    const handlePrivateMessage = () => {
-        console.log('Private message sent:', privateMessage, 'To:', selectedColleague);
-        setPrivateMessage(''); // Reset private message input after sending
     };
 
     const toggleMute = () => {
@@ -44,34 +43,55 @@ function Message() {
     };
 
     const startCall = (isVideo) => {
-        if (!selectedColleague) {
-            alert('Please select a colleague to start the call');
+        if (selectedColleagues.length === 0) {
+            alert('Please select at least one colleague to start a call');
             return;
         }
         setIsCallActive(true);
         setIsVideoCall(isVideo);
-        console.log(isVideo ? 'Starting video call with ' : 'Starting voice call with ', selectedColleague);
+        console.log(isVideo ? 'Starting video call with ' : 'Starting voice call with ', selectedColleagues);
     };
 
     const endCall = () => {
         setIsCallActive(false);
-        console.log('Call ended with ', selectedColleague);
+        console.log('Call ended with ', selectedColleagues);
     };
 
-    const handleColleagueSelect = (e) => {
-        setSelectedColleague(e.target.value);
+    const handleColleagueSelect = (colleague) => {
+        setSelectedColleagues(prev =>
+            prev.includes(colleague) ? prev.filter(c => c !== colleague) : [...prev, colleague]
+        );
+    };
+
+    const handleRightClick = (colleague, event) => {
+        event.preventDefault();
+        console.log(`Options for ${colleague}: Call or Send Message`);
+        // Implement further actions (call/message) via context menu
     };
 
     return (
         <div className="message-container">
             <div className="chat-section">
                 <h2>Colleague Chat</h2>
-                <select className="colleague-select" value={selectedColleague} onChange={handleColleagueSelect}>
-                    <option value="" disabled>Select Colleague</option>
-                    {colleagues.map((colleague, index) => (
-                        <option key={index} value={colleague}>{colleague}</option>
-                    ))}
-                </select>
+                <button onClick={() => setShowColleagueList(!showColleagueList)} className="show-colleagues-btn">
+                    <FaUserFriends /> Show Colleagues
+                </button>
+
+                {showColleagueList && (
+                    <div className="colleague-list">
+                        {colleagues.map((colleague, index) => (
+                            <div
+                                key={index}
+                                className={`colleague-item ${selectedColleagues.includes(colleague) ? 'selected' : ''}`}
+                                onClick={() => handleColleagueSelect(colleague)}
+                                onContextMenu={(e) => handleRightClick(colleague, e)}
+                            >
+                                {colleague}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
                 <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -89,16 +109,6 @@ function Message() {
                 </div>
                 {showEmojiPicker && <Picker data={data} onEmojiSelect={addEmoji} />}
                 {image && <img src={image} alt="Uploaded" className="uploaded-image" />}
-            </div>
-
-            <div className="private-message-section">
-                <h3>Private Message</h3>
-                <textarea
-                    value={privateMessage}
-                    onChange={(e) => setPrivateMessage(e.target.value)}
-                    placeholder="Send a private message..."
-                />
-                <button onClick={handlePrivateMessage}>Send Private Message</button>
             </div>
 
             <div className="meeting-section">

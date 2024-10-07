@@ -183,16 +183,8 @@ nav ul li a:hover {
 }
 
 /* Message */
-/* General Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
 body {
-    background-color: #f0f4f8;
+    background-color: #e6ecf3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -207,10 +199,7 @@ body {
     max-width: 900px;
     width: 100%;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.chat-section, .private-message-section, .meeting-section {
-    margin-bottom: 30px;
+    text-align: center;
 }
 
 textarea {
@@ -231,35 +220,57 @@ textarea:focus {
 }
 
 button {
-    background-color: #00aaff;
+    background-color: #007bff;
     border: none;
     padding: 10px 20px;
     color: white;
     font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
     transition: background 0.3s ease;
     margin-right: 10px;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
 }
 
 button:hover {
-    background-color: #007bbf;
+    background-color: #0056b3;
 }
 
-.chat-controls {
+.show-colleagues-btn {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 8px;
 }
 
-.uploaded-image {
-    max-width: 100px;
-    border-radius: 10px;
-    margin-top: 10px;
+.colleague-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.colleague-item {
+    padding: 8px 15px;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.colleague-item.selected {
+    background-color: #00aaff;
+    color: white;
+}
+
+.colleague-item:hover {
+    background-color: #ddd;
 }
 
 .call-controls {
     display: flex;
+    justify-content: center;
     gap: 10px;
     margin-top: 15px;
 }
@@ -270,27 +281,12 @@ button:hover {
     gap: 5px;
 }
 
-.colleague-select {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ddd;
+.uploaded-image {
+    max-width: 150px;
     border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    background-color: #f9f9f9;
-    transition: border 0.3s ease;
+    margin-top: 10px;
 }
 
-.colleague-select:focus {
-    border-color: #00aaff;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-/* Responsive Styles */
 @media (max-width: 768px) {
     .message-container {
         padding: 15px;
