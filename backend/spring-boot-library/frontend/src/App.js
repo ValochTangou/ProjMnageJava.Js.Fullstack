@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
-import { FaPhone, FaRegSmile } from 'react-icons/fa';
-import { Picker } from '@emoji-mart/react'; // Updated emoji-mart import
 import Home from './pages/Home';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
@@ -12,6 +10,9 @@ import ForgotPassword from './pages/ForgotPassword';
 import ForgotUsername from './pages/ForgotUsername';
 import Message from './pages/Message';
 import Setting from './pages/Setting';
+import Team from './pages/Team';
+import Calendar from './pages/Calendar';
+import Project from './pages/Project';
 
 function Layout() {
   const location = useLocation();
@@ -26,11 +27,10 @@ function Layout() {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/register">Register</Link></li>
-            <li><Link to="/main-page">Main page</Link></li>
+            <li><Link to="/main-page">Main Page</Link></li>
             <li><Link to="/overview">Overview</Link></li>
             <li><Link to="/message">Message</Link></li>
-            <li><Link to="/about-author">About author</Link></li>
-            <li><Link to="/setting">Setting</Link></li>
+            <li><Link to="/about-author">About Author</Link></li>
           </ul>
         </nav>
       )}
@@ -46,6 +46,9 @@ function Layout() {
         <Route path="/message" element={<Message />} />
         <Route path="/about-author" element={<AboutAuthor />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/project" element={<Project />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </div>
