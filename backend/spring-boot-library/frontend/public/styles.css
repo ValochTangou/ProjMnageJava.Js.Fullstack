@@ -541,24 +541,5 @@ button:hover {
       opacity: 1; /* Les images sont visibles pendant 10% du temps */
     }
 
-}
 
-/* Responsivité */
-@media (max-width: 768px) {
-  .main-navbar {
-    flex-direction: column;
-  }
-
-  .main-navbar-list {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .main-navbar-item {
-    font-size: 0.8rem; /* Plus petit sur mobile */
-  }
-
-  .main-carousel-image {
-    height: 250px; /* Ajustement de la hauteur */
-  }
 }

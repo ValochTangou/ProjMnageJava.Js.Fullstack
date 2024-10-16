@@ -1,0 +1,105 @@
+/* Calendar */
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.9); /* Identique à AboutAuthor */
+  backdrop-filter: blur(5px); /* Flou d'arrière-plan */
+}
+
+.calendar {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333; /* Couleur sobre pour le titre */
+}
+
+.current-date {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #555; /* Couleur douce pour la date actuelle */
+}
+
+.absences-section {
+  margin-bottom: 20px;
+}
+
+.absence-list {
+  list-style: none;
+  padding: 0;
+}
+
+.absence-list li {
+  background-color: #f3f3f3;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.edit-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-absence {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.absence-input {
+  width: 80%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.submit-btn, .show-all-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.submit-btn:hover, .show-all-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    max-width: 90%;
+  }
+
+  .absence-input {
+    width: 100%;
+  }
+
+  .submit-btn, .show-all-btn {
+    width: 100%;
+  }
+}

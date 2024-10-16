@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ForgotUsername from './pages/ForgotUsername';
 import Message from './pages/Message';
 import Setting from './pages/Setting';
+import Calendar from './pages/Calendar';
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
         <Route path="/main-page" element={<MainPage />} />
         <Route path="/overview" element={<Overview />} />
         <Route path="/" element={<Home />} />
+        <Route path="/calendar" element={<Calendar />} />
+
       </Routes>
     </Router>
   );
