@@ -3,13 +3,13 @@ import './pageCss/Project.css';
 
 const initialTasks = [
   { id: 1, title: 'Task 1', status: 'Not Started', assignedTo: 'Reg' },
-  { id: 2, title: 'Task 2', status: 'In Progress', assignedTo: 'Aurinelle' },
-  { id: 4, title: 'Task 4', status: 'Blocked', assignedTo: 'Aureg' },
-  { id: 3, title: 'Task 3', status: 'Completed', assignedTo: 'Lesley' },
+    { id: 2, title: 'Task 2', status: 'In Progress', assignedTo: 'Aurinelle' },
+    { id: 4, title: 'Task 4', status: 'Blocked', assignedTo: 'Aureg' },
+    { id: 3, title: 'Task 3', status: 'Completed', assignedTo: 'Lesley' },
 ];
 
 const colleagues = [
-  { id: 1, name: 'Reg', img: '/images/img8.jpg' },     // Correction ici pour l'image
+  { id: 1, name: 'Reg', img: '/images/img8.jpg' },
   { id: 2, name: 'Aurinelle', img: '/images/img1.jpg' },
   { id: 3, name: 'Lesley', img: '/images/img2.jpg' },
   { id: 4, name: 'Aureg', img: '/images/img3.jpg' },
@@ -25,10 +25,20 @@ function Project() {
   };
 
   const handleDrop = (newStatus) => {
-    setTasks(tasks.map((task) =>
-      task.id === draggedTask.id ? { ...task, status: newStatus } : task
-    ));
-    setDraggedTask(null);
+    if (draggedTask) {
+      const isUserAlreadyAssigned = tasks.some(
+        (task) => task.assignedTo === draggedTask.assignedTo && task.status === newStatus
+      );
+
+      if (!isUserAlreadyAssigned) {
+        setTasks(tasks.map((task) =>
+          task.id === draggedTask.id ? { ...task, status: newStatus } : task
+        ));
+      } else {
+        alert(`${draggedTask.assignedTo} has already been assigned to a task in the "${newStatus}" column.`);
+      }
+      setDraggedTask(null);
+    }
   };
 
   const handleUserClick = (user) => {
@@ -37,12 +47,13 @@ function Project() {
 
   const handleAddColleague = (newColleague) => {
     if (newColleague) {
-      setTasks([...tasks, {
-        id: tasks.length + 1,
+      const newTask = {
+        id: tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1, // Generate a unique ID
         title: `Task ${tasks.length + 1}`,
         status: 'Not Started',
         assignedTo: newColleague,
-      }]);
+      };
+      setTasks([...tasks, newTask]);
     }
   };
 
@@ -51,7 +62,7 @@ function Project() {
       <h1>Project Management Board</h1>
 
       <div className="task-board">
-        {['Not Started', 'In Progress', 'Completed', 'Blocked'].map((status) => (
+        {['Not Started', 'In Progress', 'Blocked', 'Completed'].map((status) => (
           <div
             key={status}
             className="status-column"
