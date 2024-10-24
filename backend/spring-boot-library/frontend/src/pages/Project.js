@@ -1,129 +1,176 @@
 import React, { useState } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import './pageCss/Project.css';
 
-const initialTasks = [
-  { id: 1, title: 'Task 1', status: 'Not Started', assignedTo: 'Reg' },
-    { id: 2, title: 'Task 2', status: 'In Progress', assignedTo: 'Aurinelle' },
-    { id: 4, title: 'Task 4', status: 'Blocked', assignedTo: 'Aureg' },
-    { id: 3, title: 'Task 3', status: 'Completed', assignedTo: 'Lesley' },
-];
+const Project = () => {
+  const [colleagues, setColleagues] = useState([
+    { id: 1, name: 'Reg', status: 'Not Started', img: '/images/img8.jpg' },
+    { id: 2, name: 'Aurinelle', status: 'In Progress', img: '/images/img1.jpg' },
+    { id: 3, name: 'Lesley', status: 'Blocked', img: '/images/img2.jpg' },
+    { id: 4, name: 'Aureg', status: 'Completed', img: '/images/img3.jpg' },
+  ]);
 
-const colleagues = [
-  { id: 1, name: 'Reg', img: '/images/img8.jpg' },
-  { id: 2, name: 'Aurinelle', img: '/images/img1.jpg' },
-  { id: 3, name: 'Lesley', img: '/images/img2.jpg' },
-  { id: 4, name: 'Aureg', img: '/images/img3.jpg' },
-];
+  const [availableColleagues, setAvailableColleagues] = useState([
+    { id: 5, name: 'Cedrick', img: '/images/img4.jpg' },
+    { id: 6, name: 'Jenny', img: '/images/img5.jpg' },
+    { id: 7, name: 'Lise', img: '/images/img6.jpg' },
+  ]);
 
-function Project() {
-  const [tasks, setTasks] = useState(initialTasks);
-  const [draggedTask, setDraggedTask] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedColleagueId, setSelectedColleagueId] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('Not Started');
+  const [report, setReport] = useState(''); // State pour le rapport
+  const [tasks, setTasks] = useState({}); // State pour les tâches accomplies par chaque collègue
 
-  const handleDragStart = (task) => {
-    setDraggedTask(task);
+  const statuses = ['Not Started', 'In Progress', 'Blocked', 'Completed'];
+  const taskOptions = ['Write Unit Tests', 'Deploy Application', 'Refactor Code', 'Update Documentation', 'Fix Bugs', 'Code Review']; // Liste de tâches
+
+  const moveColleague = (id, newStatus) => {
+    setColleagues(colleagues.map(colleague =>
+      colleague.id === id ? { ...colleague, status: newStatus } : colleague
+    ));
   };
 
-  const handleDrop = (newStatus) => {
-    if (draggedTask) {
-      const isUserAlreadyAssigned = tasks.some(
-        (task) => task.assignedTo === draggedTask.assignedTo && task.status === newStatus
-      );
+  const addColleague = () => {
+    const colleagueToAdd = availableColleagues.find(col => col.id === parseInt(selectedColleagueId));
+    if (colleagueToAdd) {
+      setColleagues([...colleagues, { ...colleagueToAdd, status: selectedStatus }]);
+      setAvailableColleagues(availableColleagues.filter(col => col.id !== colleagueToAdd.id));
+      setSelectedColleagueId('');
+    }
+  };
 
-      if (!isUserAlreadyAssigned) {
-        setTasks(tasks.map((task) =>
-          task.id === draggedTask.id ? { ...task, status: newStatus } : task
-        ));
-      } else {
-        alert(`${draggedTask.assignedTo} has already been assigned to a task in the "${newStatus}" column.`);
+  const removeColleague = (id) => {
+    setColleagues(colleagues.filter(colleague => colleague.id !== id));
+  };
+
+  const toggleTaskCompletion = (colleagueId, task) => {
+    setTasks({
+      ...tasks,
+      [colleagueId]: {
+        ...(tasks[colleagueId] || {}),
+        [task]: !((tasks[colleagueId] || {})[task])
       }
-      setDraggedTask(null);
-    }
+    });
   };
 
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
-  };
-
-  const handleAddColleague = (newColleague) => {
-    if (newColleague) {
-      const newTask = {
-        id: tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1, // Generate a unique ID
-        title: `Task ${tasks.length + 1}`,
-        status: 'Not Started',
-        assignedTo: newColleague,
-      };
-      setTasks([...tasks, newTask]);
-    }
+  const handleReportSubmit = () => {
+    alert(`Report sent: ${report}`);
+    setReport(''); // Efface le rapport après l'envoi
   };
 
   return (
-    <div className="project-container">
-      <h1>Project Management Board</h1>
-
-      <div className="task-board">
-        {['Not Started', 'In Progress', 'Blocked', 'Completed'].map((status) => (
-          <div
-            key={status}
-            className="status-column"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={() => handleDrop(status)}
+    <DndProvider backend={HTML5Backend}>
+      <div className="project-container">
+        <h1>Project Board</h1>
+        <div className="select-container">
+          <select
+            value={selectedColleagueId}
+            onChange={(e) => setSelectedColleagueId(e.target.value)}
+            className="select-input"
           >
-            <h2>{status}</h2>
-            {tasks
-              .filter((task) => task.status === status)
-              .map((task) => (
-                <div
-                  key={task.id}
-                  className="task"
-                  draggable
-                  onDragStart={() => handleDragStart(task)}
-                >
-                  <p>{task.title}</p>
-                  <div className="task-assigned-to">
-                    {colleagues.find((c) => c.name === task.assignedTo) && (
-                      <img
-                        src={colleagues.find((c) => c.name === task.assignedTo).img}
-                        alt={task.assignedTo}
-                        className="user-avatar"
-                        onClick={() => handleUserClick(task.assignedTo)}
-                      />
-                    )}
-                    <span>{task.assignedTo}</span>
-                  </div>
-                </div>
-              ))}
+            <option value="">Select a colleague</option>
+            {availableColleagues.map(colleague => (
+              <option key={colleague.id} value={colleague.id}>
+                {colleague.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="select-input"
+          >
+            {statuses.map(status => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+
+          <button onClick={addColleague} className="add-button">Add Colleague</button>
+        </div>
+
+        <div className="task-board">
+          {statuses.map(status => (
+            <StatusColumn
+              key={status}
+              status={status}
+              colleagues={colleagues.filter(colleague => colleague.status === status)}
+              moveColleague={moveColleague}
+              removeColleague={removeColleague}
+              tasks={tasks}
+              toggleTaskCompletion={toggleTaskCompletion}
+              taskOptions={taskOptions}
+            />
+          ))}
+        </div>
+
+        <div className="report-section">
+          <textarea
+            value={report}
+            onChange={(e) => setReport(e.target.value)}
+            className="report-input"
+            placeholder="Write a report here..."
+          />
+          <button onClick={handleReportSubmit} className="send-button">Send Report</button>
+        </div>
+      </div>
+    </DndProvider>
+  );
+};
+
+const StatusColumn = ({ status, colleagues, moveColleague, removeColleague, tasks, toggleTaskCompletion, taskOptions }) => {
+  const [, drop] = useDrop({
+    accept: 'colleague',
+    drop: (item) => moveColleague(item.id, status),
+  });
+
+  return (
+    <div className="status-column" ref={drop}>
+      <h2>{status}</h2>
+      {colleagues.map(colleague => (
+        <Colleague
+          key={colleague.id}
+          colleague={colleague}
+          removeColleague={removeColleague}
+          tasks={tasks[colleague.id] || {}}
+          toggleTaskCompletion={toggleTaskCompletion}
+          taskOptions={taskOptions}
+        />
+      ))}
+    </div>
+  );
+};
+
+const Colleague = ({ colleague, removeColleague, tasks, toggleTaskCompletion, taskOptions }) => {
+  const [, drag] = useDrag({
+    type: 'colleague',
+    item: { id: colleague.id },
+  });
+
+  return (
+    <div className="colleague" ref={drag}>
+      <span>{colleague.name}</span>
+      <img src={colleague.img} alt={colleague.name} className="user-avatar" />
+      <button onClick={() => removeColleague(colleague.id)} className="remove-button">Remove</button>
+
+      {/* Tasks */}
+      <div className="task-list">
+        {taskOptions.map(task => (
+          <div key={task} className="task-item">
+            <input
+              type="checkbox"
+              checked={!!tasks[task]}
+              onChange={() => toggleTaskCompletion(colleague.id, task)}
+            />
+            <label>{task}</label>
           </div>
         ))}
       </div>
-
-      <div className="add-colleague">
-        <h3>Add Colleague</h3>
-        <select onChange={(e) => handleAddColleague(e.target.value)}>
-          <option value="">Select colleague</option>
-          {colleagues.map((colleague) => (
-            <option key={colleague.id} value={colleague.name}>
-              {colleague.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {selectedUser && (
-        <div className="user-details">
-          <h2>Selected User: {selectedUser}</h2>
-          <p>Tasks assigned to {selectedUser}:</p>
-          <ul>
-            {tasks
-              .filter((task) => task.assignedTo === selectedUser)
-              .map((task) => (
-                <li key={task.id}>{task.title} - {task.status}</li>
-              ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
-}
+};
 
 export default Project;

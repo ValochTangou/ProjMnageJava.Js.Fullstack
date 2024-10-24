@@ -13,6 +13,7 @@ import Setting from './pages/Setting';
 import Team from './pages/Team';
 import Calendar from './pages/Calendar';
 import Project from './pages/Project';
+import Ticket from './pages/Ticket';
 
 function Layout() {
   const location = useLocation();
@@ -49,6 +50,7 @@ function Layout() {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/team" element={<Team />} />
         <Route path="/project" element={<Project />} />
+        <Route path="/ticket" element={<Ticket />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </div>
